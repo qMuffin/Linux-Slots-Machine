@@ -103,13 +103,13 @@ int main() {
             const char* anim2 = (i < 14) ? SYMBOLS[rand() % NUM_SYMBOLS] : reel2;
             const char* anim3 = (i < 20) ? SYMBOLS[rand() % NUM_SYMBOLS] : reel3;
 
-            printf("  -----   -----   -----\n  ");
+            printf("  ------ ------ ------\n  ");
             print_reel(anim1);
             printf(" ");
             print_reel(anim2);
             printf(" ");
             print_reel(anim3);
-            printf("\n  -----   -----   -----\n");
+            printf("\n  ------ ------ ------\n");
 
             fflush(stdout);
 
