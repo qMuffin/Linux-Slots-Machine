@@ -34,10 +34,10 @@ sudo pacman -S base-devel
 * **Because different Linux distributions use different package managers, use the appropriate installation command for your target machine before building:**
 
 ### Install GCC Compiler
-* **Arch Linux / CachyOS:** sudo pacman -S base-devel
+* **Arch Linux / CachyOS:** `sudo pacman -S base-devel`
 
-* **Ubuntu / Debian / Mint:** sudo apt update && sudo apt install build-essential
+* **Ubuntu / Debian / Mint:** `sudo apt update && sudo apt install build-essential`
 
-* **Fedora / RHEL / CentOS:** sudo dnf groupinstall "Development Tools"
+* **Fedora / RHEL / CentOS:** `sudo dnf groupinstall "Development Tools"`
 
-* **openSUSE:** sudo zypper install --type pattern devel_basis
+* **openSUSE:** `sudo zypper install --type pattern devel_basis`
