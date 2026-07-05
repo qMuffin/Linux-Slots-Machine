@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#include <string.h>
+
+// Save file configuration: Hardcoded to stay inside your main slots folder
+#define SAVE_FILE "/home/qmuffin/slots/slots_balance.txt"
 
 // Array of slot emoji symbols (Using string pointers since emojis are multi-byte characters)
 const char* SYMBOLS[] = {"🍒", "🍋", "🍊", "🍉", "👑"};
@@ -32,14 +34,29 @@ void print_reel(const char* sym) {
 }
 
 int main() {
-    int balance = 1000;
+    int balance = 1000; // Default balance for brand new players
     int bet;
 
     // Seed the random number generator
     srand(time(NULL));
 
+    // --- LOAD SAVED BALANCE ---
+    FILE *file_read = fopen(SAVE_FILE, "r");
+    if (file_read != NULL) {
+        if (fscanf(file_read, "%d", &balance) != 1) {
+            balance = 1000;
+        }
+        fclose(file_read);
+
+        // If the saved balance is 0 (bankrupt), restore it to $1000
+        if (balance <= 0) {
+            printf("\033[33mNotice: Bankrupt account detected! Automatically reloading wallet with $1000.\033[0m\n\n");
+            balance = 1000;
+        }
+    }
+
     printf("=== WELCOME TO TERMINAL SLOTS ===\n");
-    printf("You start with $%d\n\n", balance);
+    printf("Your balance: $%d\n\n", balance);
 
     while (balance > 0) {
         printf("Current Balance: $%d\n", balance);
@@ -75,15 +92,13 @@ int main() {
             const char* anim2 = (i < 14) ? SYMBOLS[rand() % NUM_SYMBOLS] : reel2;
             const char* anim3 = (i < 20) ? SYMBOLS[rand() % NUM_SYMBOLS] : reel3;
 
-            // Grid spacing updated to 6 dashes ('------') and 3 spaces between blocks
-            // to match the exact visual width of the emoji boxes.
-            printf("  ------   ------   ------\n  ");
+            printf("  -----   -----   -----\n  ");
             print_reel(anim1);
-            printf("   ");
+            printf(" ");
             print_reel(anim2);
-            printf("   ");
+            printf(" ");
             print_reel(anim3);
-            printf("\n  ------   ------   ------\n");
+            printf("\n  -----   -----   -----\n");
 
             fflush(stdout);
 
@@ -95,10 +110,10 @@ int main() {
         printf("\n");
         // --------------------------------------------
 
-        // Check win conditions universally using safe string matching (strcmp)
-        if (strcmp(reel1, reel2) == 0 && strcmp(reel2, reel3) == 0) {
+        // Check win conditions
+        if (reel1 == reel2 && reel2 == reel3) {
             int winnings = 0;
-            if (strcmp(reel1, SYMBOLS[4]) == 0) { // "👑"
+            if (reel1 == SYMBOLS[4]) { // "👑"
                 winnings = bet * 10;
                 printf(YELLOW "JACKPOT!! You won $%d!\n\n" RESET, winnings);
             } else {
@@ -106,7 +121,7 @@ int main() {
                 printf(GREEN "Three of a kind! You won $%d!\n\n" RESET, winnings);
             }
             balance += winnings;
-        } else if (strcmp(reel1, reel2) == 0 || strcmp(reel2, reel3) == 0 || strcmp(reel1, reel3) == 0) {
+        } else if (reel1 == reel2 || reel2 == reel3 || reel1 == reel3) {
             int winnings = bet * 2;
             printf(BLUE "Pair! You won $%d!\n\n" RESET, winnings);
             balance += winnings;
@@ -115,6 +130,21 @@ int main() {
         }
     }
 
-    printf("Game over! You walked away with $%d.\n", balance);
+    // --- SAVE CURRENT BALANCE ON EXIT ---
+    FILE *file_write = fopen(SAVE_FILE, "w");
+    if (file_write != NULL) {
+        fprintf(file_write, "%d", balance);
+        fclose(file_write);
+        printf("Progress saved successfully!\n");
+    } else {
+        printf("Warning: Could not save your progress.\n");
+    }
+
+    if (balance <= 0) {
+        printf("Game over! You went bankrupt.\n");
+    } else {
+        printf("Game over! You walked away with $%d.\n", balance);
+    }
+
     return 0;
-}
+}s
