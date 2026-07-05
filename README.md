@@ -28,3 +28,16 @@ sudo pacman -S base-devel
 * Create an alias in .bashrc: `alias slots='gcc /home/YOUR_USERNAME/slots/slots.c -o /tmp/slots && /tmp/slots'`
 
 ### 3. Enjoy Gambling
+
+# EXTRA
+### 📦 How to Compile Across Different Distributions
+* **Because different Linux distributions use different package managers, use the appropriate installation command for your target machine before building:**
+
+### Install GCC Compiler
+* **Arch Linux / CachyOS:** sudo pacman -S base-devel
+
+* **Ubuntu / Debian / Mint:** sudo apt update && sudo apt install build-essential
+
+* **Fedora / RHEL / CentOS:** sudo dnf groupinstall "Development Tools"
+
+* **openSUSE:** sudo zypper install --type pattern devel_basis
