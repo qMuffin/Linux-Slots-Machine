@@ -12,7 +12,12 @@ A lightweight, high-performance terminal slot machine game written in pure C. It
 
 ---
 
-## 🛠️ Requirements & Setup on CachyOS
+* **Everything was tested on my machine running ArchLinux with CachyOS distro and KDE Plasma.**
+* **The terminal used was Ghostty.**
+
+---
+
+## 🛠️ Requirements & Setup
 
 Setting up the required developer tools takes only a few seconds.
 
@@ -45,8 +50,5 @@ sudo zypper install --type pattern devel_basis
 
 ### 3. Enjoy Gambling
 
-# EXTRA
-### 📦 How to Compile Across Different Distributions
-* **Because different Linux distributions use different package managers, use the appropriate installation command for your target machine before building:**
 
 
